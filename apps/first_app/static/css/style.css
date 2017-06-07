@@ -1,0 +1,14 @@
+.clock_in {
+  display: inline-block;
+}
+.clock_out {
+  display: inline-block;
+}
+.ins {
+  display: inline-block;
+}
+.error {
+  background-color: red;
+  color: yellow;
+  display: inline-block;
+}

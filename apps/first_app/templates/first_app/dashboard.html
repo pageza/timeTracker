@@ -1,0 +1,99 @@
+{% extends 'layout.html' %}
+{% block title %}Time Tracker{% endblock %}
+{% block body %}
+{% load static %}
+<div class="header">
+  <h1>Hello {{user.first_name}}</h1>
+  {%if clock_ins == clock_outs%}
+  <p>You are not clocked in.</p>
+  {%else%}
+  <p>You are clocked in.</p>
+  {%endif%}
+  <a href="/log_out">Log Out</a>
+  {%if user.admin%}
+  <a href="/sudo">ADMIN</a>
+  {%endif%}
+</div>
+<div class="row">
+  <div class="">
+    <h2>Messages from the Company</h2>
+    {%for message in memos%}
+    <p>{{message.message}}</p>
+    {%endfor%}
+  </div>
+</div>
+
+
+{%if clock_ins == clock_outs%}
+<div class="row">
+  <div class="clock_in col-sm-6">
+  <h1>Clock In</h1>
+  <div class="">
+    <form class="" action="/clock_in" method="post">
+     {% csrf_token %}
+    <div class="jobs">
+      <label>Job:</label>
+      <select  name="job">
+        {% for job in jobs%}
+        <option value="{{job.id}}">{{job.title}}</option>
+        {%endfor%}
+      </select>
+    </div>
+    <div class="location">
+      <label>Location:</label>
+      <select  name="location">
+        {% for location in locations%}
+        <option value="{{location.id}}">{{location.street}}</option>
+        {%endfor%}
+      </select>
+    </div>
+    <div class="notes">
+      <p>Notes:</p>
+      <textarea name="notes" rows="8" cols="80">Nothing to note.</textarea>
+    </div>
+    <div class="">
+      <input type="submit" value="Clock In">
+    </div>
+  </form>
+  </div>
+  </div>
+</div>
+{%else%}
+<div class="row">
+  <div class="clock_out col-sm-6">
+    <h1>Clock Out</h1>
+    <div class="">
+      <form class="" action="/clock_out" method="post">
+        {% csrf_token %}
+        <div class="jobs">
+          <label>Job:</label>
+          <select  name="job">
+            {% for job in jobs%}
+            <option value="{{job.id}}">{{job.title}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        <div class="location">
+          <label>Location:</label>
+          <select  name="location">
+            {% for location in locations%}
+            <option value="{{location.id}}">{{location.street}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        <div class="notes">
+          <label>Notes:&emsp;&emsp;&emsp;</label>
+          <label>Lunch?</label>
+          <input type="checkbox" name="lunch" value="True">
+          <textarea name="notes" rows="8" cols="80">Nothing to note.</textarea>
+        </div>
+        <div class="">
+          <input type="submit" value="Clock Out">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+{% endblock %}
